@@ -1,0 +1,81 @@
+﻿<Window x:Class="RebarEditor.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid Margin="0,2,0,-2">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+
+        <Border Padding="20" Background="White">
+            <Grid Width="{Binding CanvasWidth}" Height="{Binding CanvasHeight}" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <ItemsControl ItemsSource="{Binding DrawingVisuals}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Canvas Margin="3" ClipToBounds="True" Name="DrawingCanvas" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="White"
+                                    IsItemsHost="True" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+            </Grid>
+        </Border>
+
+        <Border Grid.Column="1" Width="450" BorderBrush="DarkGray" BorderThickness="2">
+            <Grid Margin="0,10,0,10" Height="250" VerticalAlignment="Top">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <DataGrid ItemsSource="{Binding LongitudinalBarConfigurations}" Grid.Row="0" AutoGenerateColumns="False" CanUserAddRows="True" CanUserDeleteRows="True" MinRowHeight="25">
+                    <DataGrid.Resources>
+                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#AE54F39E"/>
+                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="Black"/>
+
+                        <Style TargetType="{x:Type DataGridCell}" x:Key="DataGridCellStyle">
+                            <Setter Property="FontSize" Value="12" />
+                            <Setter Property="VerticalContentAlignment" Value="Center"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                        </Style>
+                    </DataGrid.Resources>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="X" Binding="{Binding X, Mode=TwoWay}" Width="*" CellStyle="{StaticResource DataGridCellStyle}" />
+                        <DataGridTextColumn Header="Y" Binding="{Binding Y, Mode=TwoWay}" Width="*" CellStyle="{StaticResource DataGridCellStyle}" />
+                        <DataGridTextColumn Header="Count" Binding="{Binding Count, Mode=TwoWay}" Width="*" CellStyle="{StaticResource DataGridCellStyle}" />
+                        <DataGridTextColumn Header="Size" Binding="{Binding Size, Mode=TwoWay}" Width="*" CellStyle="{StaticResource DataGridCellStyle}" />
+                        <DataGridTextColumn Header="Spacing" Binding="{Binding Spacing, Mode=TwoWay}" Width="*" CellStyle="{StaticResource DataGridCellStyle}" />
+                        <DataGridTextColumn Header="Orientation" Binding="{Binding Orientation, Mode=TwoWay}" Width="*" CellStyle="{StaticResource DataGridCellStyle}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <DataGrid ItemsSource="{Binding StirrupConfigurations}" Grid.Row="1" AutoGenerateColumns="False" CanUserAddRows="True" CanUserDeleteRows="True" MinRowHeight="25">
+                    <DataGrid.Resources>
+                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#AE54F39E"/>
+                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="Black"/>
+
+                        <Style TargetType="{x:Type DataGridCell}" x:Key="DataGridCellStyle">
+                            <Setter Property="FontSize" Value="12" />
+                            <Setter Property="VerticalContentAlignment" Value="Center"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                        </Style>
+                    </DataGrid.Resources>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="X" Binding="{Binding X, Mode=TwoWay}" Width="*" CellStyle="{StaticResource DataGridCellStyle}" />
+                        <DataGridTextColumn Header="Y" Binding="{Binding Y, Mode=TwoWay}" Width="*" CellStyle="{StaticResource DataGridCellStyle}" />
+                        <DataGridTextColumn Header="Size" Binding="{Binding Size, Mode=TwoWay}" Width="*" CellStyle="{StaticResource DataGridCellStyle}" />
+                        <DataGridTextColumn Header="Width" Binding="{Binding Width, Mode=TwoWay}" Width="*" CellStyle="{StaticResource DataGridCellStyle}" />
+                        <DataGridTextColumn Header="Height" Binding="{Binding Height, Mode=TwoWay}" Width="*" CellStyle="{StaticResource DataGridCellStyle}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <StackPanel Grid.Row="2">
+                    <Button Content="Generate" Command="{Binding GenerateBarsCommand}" />
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>
