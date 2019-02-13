@@ -1,5 +1,7 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -19,6 +21,11 @@ namespace RebarEditor
             {
                 new RectangleSection(500, 300)
             };
+
+
+            LongitudinalBarConfiguration.DataChanged += delegate { OnGenerateBars(); };
+            StirrupConfiguration.DataChanged += delegate { OnGenerateBars(); };
+
             LongitudinalBarConfigurations = new ObservableCollection<LongitudinalBarConfiguration>();
             StirrupConfigurations = new ObservableCollection<StirrupConfiguration>();
             GenerateBarsCommand = new DelegateCommand(OnGenerateBars);
@@ -35,11 +42,24 @@ namespace RebarEditor
 
         private void OnGenerateBars()
         {
-            var bars = DrawingVisuals.OfType<LongitudinalBar>().ToList();
-            bars.ForEach(x => DrawingVisuals.Remove(x));
+            GenerateLongitudinalBars();
+            GenerateStirrups();
+        }
+
+        private void GenerateStirrups()
+        {
             var stirrups = DrawingVisuals.OfType<Stirrup>().ToList();
             stirrups.ForEach(x => DrawingVisuals.Remove(x));
+            foreach (var config in StirrupConfigurations)
+            {
+                DrawingVisuals.Add(new Stirrup(new Point(config.X, config.Y), config.Width, config.Height));
+            }
+        }
 
+        private void GenerateLongitudinalBars()
+        {
+            var bars = DrawingVisuals.OfType<LongitudinalBar>().ToList();
+            bars.ForEach(x => DrawingVisuals.Remove(x));
             foreach (var reinforcementType in LongitudinalBarConfigurations)
             {
                 for (var j = 0; j < reinforcementType.Count; j++)
@@ -49,23 +69,20 @@ namespace RebarEditor
                     DrawingVisuals.Add(new LongitudinalBar(new Point(reinforcementType.X + xInc, reinforcementType.Y + yInc), reinforcementType.Size));
                 }
             }
-
-            foreach (var config in StirrupConfigurations)
-            {
-                DrawingVisuals.Add(new Stirrup(new Point(config.X, config.Y), config.Width, config.Height));
-            }
         }
     }
 
     public class StirrupConfiguration : BindableBase
     {
+        public static event EventHandler DataChanged = (sender, args) => { };
+
         public double X
         {
             get => _x;
             set
             {
                 _x = value;
-                OnPropertyChanged(() => X);
+                PropertyChangedLocal(() => X);
             }
         }
 
@@ -75,7 +92,7 @@ namespace RebarEditor
             set
             {
                 _y = value;
-                OnPropertyChanged(() => Y);
+                PropertyChangedLocal(() => Y);
             }
         }
 
@@ -85,7 +102,7 @@ namespace RebarEditor
             set
             {
                 _size = value;
-                OnPropertyChanged(() => Size);
+                PropertyChangedLocal(() => Size);
             }
         }
 
@@ -95,7 +112,7 @@ namespace RebarEditor
             set
             {
                 _width = value;
-                OnPropertyChanged(() => Width);
+                PropertyChangedLocal(() => Width);
             }
         }
 
@@ -105,7 +122,7 @@ namespace RebarEditor
             set
             {
                 _height = value;
-                OnPropertyChanged(() => Height);
+                PropertyChangedLocal(() => Height);
             }
         }
 
@@ -114,17 +131,25 @@ namespace RebarEditor
         private double _size;
         private double _width;
         private double _height;
+
+        private void PropertyChangedLocal<T>(Expression<Func<T>> propertyExpression)
+        {
+            DataChanged?.Invoke(this, null);
+            OnPropertyChanged(PropertySupport.ExtractPropertyName<T>(propertyExpression));
+        }
     }
 
     public class LongitudinalBarConfiguration : BindableBase
     {
+        public static event EventHandler DataChanged = (sender, args) => { };
+
         public double X
         {
             get => _x;
             set
             {
                 _x = value;
-                OnPropertyChanged(() => X);
+                PropertyChangedLocal(() => X);
             }
         }
 
@@ -134,7 +159,7 @@ namespace RebarEditor
             set
             {
                 _y = value;
-                OnPropertyChanged(() => Y);
+                PropertyChangedLocal(() => Y);
             }
         }
 
@@ -144,7 +169,7 @@ namespace RebarEditor
             set
             {
                 _size = value;
-                OnPropertyChanged(() => Size);
+                PropertyChangedLocal(() => Size);
             }
         }
 
@@ -154,7 +179,7 @@ namespace RebarEditor
             set
             {
                 _count = value;
-                OnPropertyChanged(() => Count);
+                PropertyChangedLocal(() => Count);
             }
         }
 
@@ -164,7 +189,7 @@ namespace RebarEditor
             set
             {
                 _spacing = value;
-                OnPropertyChanged(() => Spacing);
+                PropertyChangedLocal(() => Spacing);
             }
         }
 
@@ -174,7 +199,7 @@ namespace RebarEditor
             set
             {
                 _orientation = value;
-                OnPropertyChanged(() => Orientation);
+                PropertyChangedLocal(() => Orientation);
             }
         }
 
@@ -184,6 +209,12 @@ namespace RebarEditor
         private int _count;
         private double _spacing;
         private int _orientation;
+
+        private void PropertyChangedLocal<T>(Expression<Func<T>> propertyExpression)
+        {
+            DataChanged?.Invoke(this, null);
+            OnPropertyChanged(PropertySupport.ExtractPropertyName<T>(propertyExpression));
+        }
     }
 
     public class LongitudinalBar : Shape
@@ -202,7 +233,7 @@ namespace RebarEditor
         {
             Point = location;
             Size = size;
-            Fill = Brushes.Red;
+            Fill = Brushes.Brown;
         }
     }
 
@@ -238,8 +269,8 @@ namespace RebarEditor
             Height = height;
             Width = width;
             Fill = Brushes.Transparent;
-            Stroke = Brushes.Blue;
-            StrokeThickness = 2;
+            Stroke = Brushes.DarkSlateGray;
+            StrokeThickness = 5;
         }
     }
 }

@@ -1,0 +1,165 @@
+﻿<UserControl x:Class="ExpanderStyle.Wheel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ExpanderStyle"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <Style TargetType="{x:Type Border}" x:Key="LayerBorder">
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Border.Opacity" Value="0.8" />
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="False">
+                    <Setter Property="Border.Opacity" Value="1" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <SolidColorBrush Color="#085154" x:Key="FillColor" />
+    </UserControl.Resources>
+    <Border>
+        <Grid>
+            <Grid Height="75" Width="250">
+                <Border>
+                    <StackPanel Orientation="Horizontal">
+                        <!--<Border MouseLeftButtonDown="OnMEnter" x:Name="WheelBorder">
+                            <Grid Width="50" Height="50">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+
+                                <Rectangle Width="45" Height="12" Fill="{StaticResource FillColor}" Grid.Row="0" />
+                                <StackPanel Orientation="Horizontal" Grid.Row="1">
+                                    <Ellipse Width="12" Height="12" Fill="{StaticResource FillColor}" Margin="2,0,0,0" />
+                                    <Ellipse Width="12" Height="12" Fill="{StaticResource FillColor}" Margin="3,0,0,0"/>
+                                    <Ellipse Width="12" Height="12" Fill="{StaticResource FillColor}" Margin="3,0,0,0"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Grid.Row="2">
+                                    <Ellipse Width="12" Height="12" Fill="{StaticResource FillColor}" Margin="7,0,0,0"/>
+                                    <Ellipse Width="12" Height="12" Fill="{StaticResource FillColor}" Margin="5,0,0,0"/>
+                                </StackPanel>
+                                <Rectangle Width="45" Height="12" Fill="{StaticResource FillColor}" Grid.Row="3" />
+                            </Grid>
+                        </Border>-->
+
+                        <Border x:Name="OptionsBorder" Background="Gray" Width="50" Height="50"  MouseEnter="OnOptionBorderMouseEnter">
+
+                        </Border>
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <Popup x:Name="OptionsPopup" AllowsTransparency="True" StaysOpen="False" PopupAnimation="Fade"
+                   Focusable="True" PlacementTarget="{Binding ElementName=OptionsBorder}" Placement="Bottom">
+                <Border Background="Transparent">
+                    <Border BorderThickness="0,3.5,0,3.5" Background="White" 
+                            BorderBrush="#4E4E4E" Width="120" Height="60"
+                            Padding="10,2,10,2">
+                        <Grid VerticalAlignment="Top">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Button Content="1" Width="30" Height="30" Grid.Column="0" />
+                                <Button Content="1" Width="30" Height="30" Grid.Column="1" />
+                            </Grid>
+                        </Grid>
+                    </Border>
+                </Border>
+
+            </Popup>
+
+            <Popup x:Name="WheelPopup" AllowsTransparency="True" StaysOpen="True" PopupAnimation="Fade"
+                   Focusable="True" PlacementTarget="{Binding ElementName=WheelBorder}" Placement="Left">
+                <Border Background="Transparent">
+                    <!--<Border.LayoutTransform>
+                        <ScaleTransform ScaleX="0.5" ScaleY="0.5"></ScaleTransform>
+                    </Border.LayoutTransform>-->
+                    <Grid>
+                        <Border CornerRadius="90,10,90,90" Width="200" Height="200" BorderBrush="#5B5959"
+                                BorderThickness="3" Background="LightGray" />
+                        <Border CornerRadius="80" Width="160" Height="160" BorderBrush="#5B5959"
+                                BorderThickness="3" Background="DarkGray" />
+
+                        <Border BorderThickness="0,3.5,0,3.5" Background="LightGray" 
+                                BorderBrush="#4E4E4E" Width="160" Height="100"
+                                Padding="10,2,10,2">
+                            <Grid>
+                                <Grid Width="160" Height="100" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+
+                                    <Border Grid.Row="0" x:Name="T1" MouseLeftButtonDown="OnBorderClick" Style="{StaticResource LayerBorder}">
+                                        <Rectangle Width="160" Height="12" Fill="{StaticResource FillColor}" />
+                                    </Border>
+                                    <Border Grid.Row="1" x:Name="T2" MouseLeftButtonDown="OnBorderClick" Style="{StaticResource LayerBorder}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Ellipse Width="12" Height="12" Fill="{StaticResource FillColor}" Margin="10,0,0,0" />
+                                            <Ellipse Width="12" Height="12" Fill="{StaticResource FillColor}" Margin="29,0,0,0"/>
+                                            <Ellipse Width="12" Height="12" Fill="{StaticResource FillColor}" Margin="29,0,0,0"/>
+                                            <Ellipse Width="12" Height="12" Fill="{StaticResource FillColor}" Margin="29,0,0,0"/>
+                                        </StackPanel>
+                                    </Border>
+                                    <Border Grid.Row="2" x:Name="B2" MouseLeftButtonDown="OnBorderClick" Style="{StaticResource LayerBorder}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Ellipse Width="12" Height="12" Fill="{StaticResource FillColor}" Margin="27,0,0,0"/>
+                                            <Ellipse Width="12" Height="12" Fill="{StaticResource FillColor}" Margin="35,0,0,0"/>
+                                            <Ellipse Width="12" Height="12" Fill="{StaticResource FillColor}" Margin="35,0,0,0"/>
+                                        </StackPanel>
+                                    </Border>
+                                    <Border Grid.Row="3" x:Name="B1" MouseLeftButtonDown="OnBorderClick" Style="{StaticResource LayerBorder}">
+                                        <Rectangle Width="160" Height="12" Fill="{StaticResource FillColor}" />
+                                    </Border>
+                                </Grid>
+                            </Grid>
+                        </Border>
+
+                        <Path Stroke="#4E4E4E" StrokeThickness="3" Fill="LightGray"
+                              HorizontalAlignment="Left">
+                            <Path.Data>
+                                <PathGeometry>
+                                    <PathGeometry.Figures>
+                                        <PathFigure StartPoint="20,50" IsClosed="False">
+                                            <LineSegment Point="20,90"/>
+                                            <LineSegment Point="15,100"/>
+                                            <LineSegment Point="25,110"/>
+                                            <LineSegment Point="20,113"/>
+                                            <LineSegment Point="20,150"/>
+                                        </PathFigure>
+                                    </PathGeometry.Figures>
+                                </PathGeometry>
+                            </Path.Data>
+                        </Path>
+
+                        <Path Stroke="#4E4E4E" StrokeThickness="3" Fill="LightGray"
+                              HorizontalAlignment="Left">
+                            <Path.Data>
+                                <PathGeometry>
+                                    <PathGeometry.Figures>
+                                        <PathFigure StartPoint="180,50" IsClosed="False">
+                                            <LineSegment Point="180,90"/>
+                                            <LineSegment Point="185,100"/>
+                                            <LineSegment Point="175,110"/>
+                                            <LineSegment Point="180,113"/>
+                                            <LineSegment Point="180,150"/>
+                                        </PathFigure>
+                                    </PathGeometry.Figures>
+                                </PathGeometry>
+                            </Path.Data>
+                        </Path>
+                    </Grid>
+                </Border>
+            </Popup>
+        </Grid>
+    </Border>
+</UserControl>

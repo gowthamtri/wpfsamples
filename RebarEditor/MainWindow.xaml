@@ -3,16 +3,22 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid Margin="0,2,0,-2">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-            <ColumnDefinition Width="Auto" />
-        </Grid.ColumnDefinitions>
+        mc:Ignorable="d" Title="MainWindow" Height="750" Width="850" ResizeMode="NoResize">
+    <Grid Margin="0,2,0,-2" MouseWheel="GridMouseWheel">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
 
-        <Border Padding="20" Background="White">
+        <Slider x:Name="Slider" Orientation="Horizontal" Minimum="0" Maximum="8" LargeChange="0.25"
+                SmallChange="0.01" Value="1.0" Height="22" Background="WhiteSmoke" Visibility="Collapsed"
+                Width="200" VerticalAlignment="Center" VerticalContentAlignment="Center" />
+
+        <Border Padding="20" Background="White" Grid.Row="0">
             <Grid Width="{Binding CanvasWidth}" Height="{Binding CanvasHeight}" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <FrameworkElement.LayoutTransform>
+                    <ScaleTransform ScaleX="{Binding ElementName=Slider, Path=Value}" ScaleY="{Binding ElementName=Slider, Path=Value}"/>
+                </FrameworkElement.LayoutTransform>
                 <ItemsControl ItemsSource="{Binding DrawingVisuals}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
@@ -24,56 +30,59 @@
             </Grid>
         </Border>
 
-        <Border Grid.Column="1" Width="450" BorderBrush="DarkGray" BorderThickness="2">
-            <Grid Margin="0,10,0,10" Height="250" VerticalAlignment="Top">
-                <Grid.RowDefinitions>
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <DataGrid ItemsSource="{Binding LongitudinalBarConfigurations}" Grid.Row="0" AutoGenerateColumns="False" CanUserAddRows="True" CanUserDeleteRows="True" MinRowHeight="25">
-                    <DataGrid.Resources>
-                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#AE54F39E"/>
-                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="Black"/>
+        <Border Grid.Row="1" BorderBrush="DarkGray" BorderThickness="2">
+            <Grid Margin="0,10,0,10" VerticalAlignment="Top" Height="250">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0">
+                    <Label Content="Longitudinal Bars" HorizontalAlignment="Center" FontWeight="DemiBold" FontSize="12" />
+                    <DataGrid ItemsSource="{Binding LongitudinalBarConfigurations}" AutoGenerateColumns="False"
+                              CanUserAddRows="True" CanUserDeleteRows="True" MinRowHeight="25" VerticalScrollBarVisibility="Auto">
+                        <DataGrid.Resources>
+                            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#AED5F9E6"/>
+                            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="Black"/>
 
-                        <Style TargetType="{x:Type DataGridCell}" x:Key="DataGridCellStyle">
-                            <Setter Property="FontSize" Value="12" />
-                            <Setter Property="VerticalContentAlignment" Value="Center"/>
-                            <Setter Property="HorizontalContentAlignment" Value="Center"/>
-                        </Style>
-                    </DataGrid.Resources>
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="X" Binding="{Binding X, Mode=TwoWay}" Width="*" CellStyle="{StaticResource DataGridCellStyle}" />
-                        <DataGridTextColumn Header="Y" Binding="{Binding Y, Mode=TwoWay}" Width="*" CellStyle="{StaticResource DataGridCellStyle}" />
-                        <DataGridTextColumn Header="Count" Binding="{Binding Count, Mode=TwoWay}" Width="*" CellStyle="{StaticResource DataGridCellStyle}" />
-                        <DataGridTextColumn Header="Size" Binding="{Binding Size, Mode=TwoWay}" Width="*" CellStyle="{StaticResource DataGridCellStyle}" />
-                        <DataGridTextColumn Header="Spacing" Binding="{Binding Spacing, Mode=TwoWay}" Width="*" CellStyle="{StaticResource DataGridCellStyle}" />
-                        <DataGridTextColumn Header="Orientation" Binding="{Binding Orientation, Mode=TwoWay}" Width="*" CellStyle="{StaticResource DataGridCellStyle}" />
-                    </DataGrid.Columns>
-                </DataGrid>
+                            <Style TargetType="{x:Type DataGridCell}" x:Key="DataGridCellStyle">
+                                <Setter Property="FontSize" Value="12" />
+                                <Setter Property="VerticalContentAlignment" Value="Center"/>
+                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                            </Style>
+                        </DataGrid.Resources>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="X" Binding="{Binding X, Mode=TwoWay}" Width="*" CellStyle="{StaticResource DataGridCellStyle}" />
+                            <DataGridTextColumn Header="Y" Binding="{Binding Y, Mode=TwoWay}" Width="*" CellStyle="{StaticResource DataGridCellStyle}" />
+                            <DataGridTextColumn Header="Count" Binding="{Binding Count, Mode=TwoWay}" Width="*" CellStyle="{StaticResource DataGridCellStyle}" />
+                            <DataGridTextColumn Header="Diameter" Binding="{Binding Size, Mode=TwoWay}" Width="*" CellStyle="{StaticResource DataGridCellStyle}" />
+                            <DataGridTextColumn Header="Spacing" Binding="{Binding Spacing, Mode=TwoWay}" Width="*" CellStyle="{StaticResource DataGridCellStyle}" />
+                            <DataGridTextColumn Header="Orientation" Binding="{Binding Orientation, Mode=TwoWay}" Width="*" CellStyle="{StaticResource DataGridCellStyle}" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
 
-                <DataGrid ItemsSource="{Binding StirrupConfigurations}" Grid.Row="1" AutoGenerateColumns="False" CanUserAddRows="True" CanUserDeleteRows="True" MinRowHeight="25">
-                    <DataGrid.Resources>
-                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#AE54F39E"/>
-                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="Black"/>
+                <StackPanel Grid.Column="1">
+                    <Label Content="Link Bars" HorizontalAlignment="Center" FontWeight="DemiBold" FontSize="12" />
+                    <DataGrid ItemsSource="{Binding StirrupConfigurations}" Grid.Column="1" AutoGenerateColumns="False" 
+                          CanUserAddRows="True" CanUserDeleteRows="True" MinRowHeight="25" VerticalScrollBarVisibility="Auto">
+                        <DataGrid.Resources>
+                            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#AED5F9E6"/>
+                            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="Black"/>
 
-                        <Style TargetType="{x:Type DataGridCell}" x:Key="DataGridCellStyle">
-                            <Setter Property="FontSize" Value="12" />
-                            <Setter Property="VerticalContentAlignment" Value="Center"/>
-                            <Setter Property="HorizontalContentAlignment" Value="Center"/>
-                        </Style>
-                    </DataGrid.Resources>
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="X" Binding="{Binding X, Mode=TwoWay}" Width="*" CellStyle="{StaticResource DataGridCellStyle}" />
-                        <DataGridTextColumn Header="Y" Binding="{Binding Y, Mode=TwoWay}" Width="*" CellStyle="{StaticResource DataGridCellStyle}" />
-                        <DataGridTextColumn Header="Size" Binding="{Binding Size, Mode=TwoWay}" Width="*" CellStyle="{StaticResource DataGridCellStyle}" />
-                        <DataGridTextColumn Header="Width" Binding="{Binding Width, Mode=TwoWay}" Width="*" CellStyle="{StaticResource DataGridCellStyle}" />
-                        <DataGridTextColumn Header="Height" Binding="{Binding Height, Mode=TwoWay}" Width="*" CellStyle="{StaticResource DataGridCellStyle}" />
-                    </DataGrid.Columns>
-                </DataGrid>
-
-                <StackPanel Grid.Row="2">
-                    <Button Content="Generate" Command="{Binding GenerateBarsCommand}" />
+                            <Style TargetType="{x:Type DataGridCell}" x:Key="DataGridCellStyle">
+                                <Setter Property="FontSize" Value="12" />
+                                <Setter Property="VerticalContentAlignment" Value="Center"/>
+                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                            </Style>
+                        </DataGrid.Resources>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="X" Binding="{Binding X, Mode=TwoWay}" Width="*" CellStyle="{StaticResource DataGridCellStyle}" />
+                            <DataGridTextColumn Header="Y" Binding="{Binding Y, Mode=TwoWay}" Width="*" CellStyle="{StaticResource DataGridCellStyle}" />
+                            <DataGridTextColumn Header="Diameter" Binding="{Binding Size, Mode=TwoWay}" Width="*" CellStyle="{StaticResource DataGridCellStyle}" />
+                            <DataGridTextColumn Header="Width" Binding="{Binding Width, Mode=TwoWay}" Width="*" CellStyle="{StaticResource DataGridCellStyle}" />
+                            <DataGridTextColumn Header="Height" Binding="{Binding Height, Mode=TwoWay}" Width="*" CellStyle="{StaticResource DataGridCellStyle}" />
+                        </DataGrid.Columns>
+                    </DataGrid>
                 </StackPanel>
             </Grid>
         </Border>

@@ -1,4 +1,4 @@
-﻿namespace RebarEditor
+﻿namespace RebarEditConfig
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -9,12 +9,6 @@
         {
             InitializeComponent();
             DataContext = new MainViewModel();
-        }
-
-        private void GridMouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
-        {
-            var eDelta = e.Delta < 0 ? -0.1 : 0.1;
-            Slider.Value = Slider.Value + eDelta;
         }
     }
 }

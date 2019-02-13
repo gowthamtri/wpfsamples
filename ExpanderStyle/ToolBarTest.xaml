@@ -1,0 +1,42 @@
+﻿<UserControl x:Class="ExpanderStyle.ToolBarTest"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ExpanderStyle"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+       <Grid Height="30">
+           <Border>
+               <StackPanel Orientation="Horizontal">
+                   <Border MouseEnter="OnMEnter" x:Name="WheelBorder">
+                       <Grid Width="50" Height="50">
+                           <Grid.RowDefinitions>
+                               <RowDefinition />
+                               <RowDefinition />
+                               <RowDefinition />
+                               <RowDefinition />
+                           </Grid.RowDefinitions>
+
+                           <Rectangle Width="45" Height="12" Fill="CadetBlue" Grid.Row="0" />
+                           <Ellipse Width="12" Height="12" Fill="CadetBlue" Grid.Row="1" />
+                           <Ellipse Width="12" Height="12" Fill="CadetBlue" Grid.Row="2" />
+                           <Rectangle Width="45" Height="12" Fill="CadetBlue" Grid.Row="3" />
+                       </Grid>
+                   </Border>
+               </StackPanel>
+           </Border>
+        </Grid>
+
+        <Popup x:Name="Wheel" AllowsTransparency="True" StaysOpen="False" 
+               Focusable="True" PlacementTarget="{Binding ElementName=WheelBorder}" Placement="Left">
+            <Border Background="Transparent">
+                <Border CornerRadius="90,10,90,90" Width="180" Height="180" Background="LightGray">
+                    <Border CornerRadius="80" Width="160" Height="160" Background="DarkGray">
+                    </Border>
+                </Border>
+            </Border>
+        </Popup>
+    </Grid>
+</UserControl>
