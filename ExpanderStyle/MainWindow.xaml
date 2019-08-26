@@ -13,9 +13,7 @@
         
     </Window.Resources>
     <Border>
-        <Grid>
-            <self:ScrollBar />
-        </Grid>
+        <self:StackedDonut />
     </Border>
     <Window.Style>
         <Style TargetType="{x:Type Window}">

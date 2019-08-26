@@ -1,0 +1,144 @@
+﻿<UserControl x:Class="ExpanderStyle.RangeSlider"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ExpanderStyle"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <ControlTemplate x:Key="simpleSlider" TargetType="{x:Type Slider}">
+            <Border SnapsToDevicePixels="true" 
+                    BorderBrush="Black" 
+                    BorderThickness="1">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto" MinHeight="20"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Rectangle x:Name="PART_SelectionRange"/>
+
+                    <Track x:Name="PART_Track" Grid.Row="1">
+                        <Track.Thumb>
+                            <Thumb x:Name="Thumb">
+                                <Thumb.Template>
+                                    <ControlTemplate TargetType="Thumb">
+                                        <Rectangle Fill="Red" 
+                                                   Stroke="Black"
+                                                   StrokeThickness="1" 
+                                                   Width="10"
+                                                   Height="18"
+                                                   SnapsToDevicePixels="True"/>
+                                    </ControlTemplate>
+                                </Thumb.Template>
+                            </Thumb>
+                        </Track.Thumb>
+                    </Track>
+                </Grid>
+            </Border>
+        </ControlTemplate>
+
+        <Style x:Key="FlatBtn" TargetType="{x:Type RepeatButton}">
+            <Setter Property="Foreground" Value="Brown"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="FontWeight" Value="DemiBold"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type RepeatButton}">
+                        <Border Name="border" BorderThickness="0" Padding="4,2" BorderBrush="Transparent" CornerRadius="2"
+                                Background="Transparent">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="UIElement.IsMouseOver" Value="true">
+                                <Setter TargetName="border" Property="Border.Background" Value="Transparent"/>
+                            </Trigger>
+                            <Trigger Property="UIElement.IsEnabled" Value="false">
+                                <Setter Property="UIElement.Opacity" Value="0.4"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="SliderStyle" TargetType="{x:Type Slider}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Slider}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" MinHeight="{TemplateBinding FrameworkElement.MinHeight}"/>
+                            </Grid.RowDefinitions>
+                            <Border x:Name="TrackBackground" Grid.Row="0" Margin="10,0" BorderThickness="2" BorderBrush="LightGray"
+                      VerticalAlignment="Center" Height="4" Opacity="0.2" />
+                            <Track x:Name="PART_Track" Grid.Row="0">
+                                <!--<Track.DecreaseRepeatButton>
+                                    <RepeatButton Command="{x:Static Slider.DecreaseLarge}" Style="{StaticResource FlatBtn}"/>
+                                </Track.DecreaseRepeatButton>
+                                <Track.IncreaseRepeatButton>
+                                    <RepeatButton Command="{x:Static Slider.IncreaseLarge}" Style="{StaticResource FlatBtn}"/>
+                                </Track.IncreaseRepeatButton>-->
+                                <Track.Thumb>
+                                    <Thumb>
+                                        <FrameworkElement.Style>
+                                            <Style TargetType="{x:Type Thumb}">
+                                                <Setter Property="OverridesDefaultStyle" Value="true"/>
+                                                <Setter Property="Template">
+                                                    <Setter.Value>
+                                                        <ControlTemplate TargetType="{x:Type Thumb}">
+                                                            <Grid Background="#FF34b4e3">
+                                                                <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Center" Orientation="Horizontal">
+                                                                    <Rectangle Margin="1.5" Fill="White" Width="1" Height="10"/>
+                                                                    <Rectangle Margin="1.5" Fill="White" Width="1" Height="10"/>
+                                                                    <Rectangle Margin="1.5" Fill="White" Width="1" Height="10"/>
+                                                                </StackPanel>
+                                                            </Grid>
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Style>
+                                        </FrameworkElement.Style>
+                                    </Thumb>
+                                </Track.Thumb>
+                            </Track>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    <Grid Width="450" Height="250">
+        <Border BorderThickness="0,1,0,0" 
+                BorderBrush="Black" 
+                VerticalAlignment="Top" 
+                Height="1" 
+                Margin="5,0,5,0" />
+
+        <Slider x:Name="S1" VerticalAlignment="Top"
+                Minimum="{Binding ElementName=root, Path=Minimum}"
+                Maximum="{Binding ElementName=root, Path=Maximum}"
+                Value="{Binding ElementName=root, Path=LowerValue}"
+                Style="{StaticResource SliderStyle}" />
+        <Slider x:Name="S2" VerticalAlignment="Top"
+                Minimum="{Binding ElementName=root, Path=Minimum}"
+                Maximum="{Binding ElementName=root, Path=Maximum}"
+                Value="{Binding ElementName=root, Path=UpperValue}"
+                Style="{StaticResource SliderStyle}"
+                Margin="15,0,0,0" />
+        <Slider x:Name="S3" VerticalAlignment="Top"
+                Minimum="{Binding ElementName=root, Path=Minimum}"
+                Maximum="{Binding ElementName=root, Path=Maximum}"
+                Value="{Binding ElementName=root, Path=UpperValue}"
+                Style="{StaticResource SliderStyle}"
+                Margin="30,0,0,0" />
+        
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Text="{Binding ElementName=S1, Path=Value}" VerticalAlignment="Bottom" Margin="5,0,0,0" HorizontalAlignment="Left" />
+            <TextBlock Text="{Binding ElementName=S2, Path=Value}" VerticalAlignment="Bottom" Margin="5,0,0,0" HorizontalAlignment="Right" />
+            <TextBlock Text="{Binding ElementName=S3, Path=Value}" VerticalAlignment="Bottom" Margin="5,0,0,0" HorizontalAlignment="Right" />
+        </StackPanel>
+    </Grid>
+</UserControl>

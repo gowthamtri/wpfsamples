@@ -1,0 +1,18 @@
+﻿<UserControl x:Class="ExpanderStyle.StackedDonut"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ExpanderStyle"
+             mc:Ignorable="d" Loaded="OnControlLoaded">
+    <Grid>
+        <ItemsControl ItemsSource="{Binding DrawingVisuals}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Canvas Margin="3" Width="400" Height="400" ClipToBounds="True" Name="DrawingCanvas" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="White"
+                            IsItemsHost="True" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+        </ItemsControl>
+    </Grid>
+</UserControl>
